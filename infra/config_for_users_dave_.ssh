@@ -1,0 +1,5 @@
+Host blc
+    StrictHostKeyChecking no
+    UserKnownHostsFile /dev/null
+    User dave
+    HostName hmsoftware.uk 

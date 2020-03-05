@@ -1,0 +1,60 @@
+#cloud-config
+
+package_upgrade: true
+runcmd:
+  - wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+  - sudo dpkg -i packages-microsoft-prod.deb
+  - sudo add-apt-repository universe -y
+  - sudo apt-get update -y
+  - sudo apt-get install apt-transport-https -y
+  - sudo apt-get update -y
+
+  # nginx
+  - sudo apt-get install nginx -y
+
+  # use the runtime when get build pipeline working
+  - sudo apt-get install dotnet-sdk-3.1 -y
+  - sudo mkdir /var/www
+  - cd /var/www
+
+  # Clone the repo - using an account with readonly privs only to that repo
+  # this is what I'd type, but special characters needs to be escaped
+  - sudo git clone https://github.com/djhmateer/WebApplication5 blsource
+
+  #
+  # Website
+  #
+  # nginx config
+  - sudo cp /var/www/blsource/infra/nginxdefault.txt /etc/nginx/sites-available/default
+  - sudo nginx -s reload
+
+  # create a publish directory for Kestrel
+  - sudo mkdir /var/www/blweb
+
+  # publish the web app
+  #- cd /var/www/blsource/BLC.Website
+  - cd /var/www/blsource/WebApplication5
+  - sudo dotnet publish --configuration Release 
+
+  # copy files to publish directory
+  - cd bin/Release/netcoreapp3.1/publish/
+  - sudo cp -a * /var/www/blweb/.
+
+  # change ownership of the files - TODO review this
+  - sudo chown -R www-data:www-data /var/www/blsource
+  - sudo chown -R www-data:www-data /var/www/blweb
+  - sudo chmod -R 777 /var/www/blsource
+
+  # make the systemd service to keep Kestrel alive
+  - cd /var/www/blsource/infra
+  - sudo cp kestrel-blc.service /etc/systemd/system/kestrel-blc.service
+
+  # start the Kestrel web app using systemd using kestrel-blc.service text files
+  - sudo systemctl enable kestrel-blc.service
+  - sudo systemctl start kestrel-blc.service
+
+  # tidy up by removing the source and html dir
+  - sudo rm -rf /var/www/blsource
+  - sudo rm -rf /var/www/html
+  
+  - sudo reboot now
