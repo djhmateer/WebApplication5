@@ -10,13 +10,13 @@ int=$(shuf -i 1-1000 -n 1)
 # generate a 34 character password (normal, capitals and numbers)
 password=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c34)
 
-rg=BLCTEST${int}
-dnsname=blctest${int}
+rg=WebApplication5TEST${int}
+dnsname=webapplication5test${int}
 adminusername=azureuser${int}
 adminpassword=${password}
 
 region=westeurope
-vmname=blctest${int}
+vmname=webapplication5test${int}
 vnet=vnet${int}
 subnet=subnet${int}
 publicIPName=publicIP${int}
