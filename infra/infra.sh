@@ -100,8 +100,8 @@ az vm create \
     --nics ${nicName} \
     --image ${image} \
     --ssh-key-values sshkey-homelenovo.pub sshkey-work.pub sshkey-homedesktop.pub \
+    --custom-data cloud-init.txt \
     --size Standard_B2s
-    # --custom-data cloud-init.txt \
 
 # -o is skip are you sure about ssh keys
 echo -e "\nssh -o StrictHostKeyChecking=no dave@${dnsname}.westeurope.cloudapp.azure.com\n"
