@@ -1,5 +1,0 @@
-2020-03-06 10:50:56.122 +00:00 [INF] 
-2020-03-06 10:50:56.208 +00:00 [INF] Starting up BLC.Website (Program.cs)
-2020-03-06 10:50:58.163 +00:00 [INF] Application started. Press Ctrl+C to shut down.
-2020-03-06 10:50:58.165 +00:00 [INF] Hosting environment: Development
-2020-03-06 10:50:58.166 +00:00 [INF] Content root path: c:\dev\test\WebApplication5\WebApplication5
